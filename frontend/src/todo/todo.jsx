@@ -14,17 +14,31 @@ export default class Todo extends Component{
         this.state = {description:'', list:[]}
         this.handleAdd = this.handleAdd.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
+        this.handleMarkAsDone = this.handleMarkAsDone.bind(this);
+        this.handleMarkAsPending = this.handleMarkAsPending.bind(this)
+        this.refresh();
     }
     
     handleAdd(){
         const description = this.state.description
-        console.log(URL);
-        console.log(description)
         axios.post(URL,{description})
         .then
-        (resp => console.log('funcionou')).catch(error => {
+        (resp => this.refresh()).catch(error => {
             console.log(error);
         });
+    }
+    handleMarkAsDone(todo){
+        axios.put(`${URL}/${todo._id}`,{...todo,done:true})
+                .then(resp=>this.refresh())
+    }
+    handleMarkAsPending(todo){
+        axios.put(`${URL}/${todo._id}`,{...todo,done:false})
+                .then(resp=>this.refresh())
+    }
+    handleRemove(todo){
+        axios.delete(`${URL}/${todo._id}`)
+                .then(resp=>this.refresh())
     }
     refresh(){
         axios.get(URL).then(
@@ -32,8 +46,9 @@ export default class Todo extends Component{
         )
     }
     handleChange(e){
+        if(e.target)
         this.setState({...this.state, description:e.target.value})
-        console.log('change')
+       
     }
     render(){
     return (
@@ -41,7 +56,9 @@ export default class Todo extends Component{
         <PageHeader name='Tarefas' small='Cadastro'/>
         <TodoForm handleAdd={this.handleAdd} 
         description={this.state.description} handleChange={this.handleChange}/>
-        <TodoList list={this.state.list}/>
+        <TodoList list={this.state.list} handleRemove={this.handleRemove}
+        handleMarkAsDone={this.handleMarkAsDone} 
+        handleMarkAsPending={this.handleMarkAsPending}/>
         </div>
     )
     }
