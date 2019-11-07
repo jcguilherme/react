@@ -7,7 +7,7 @@ import TodoList from './todoList'
 
 
 const URL= 'http://localhost:3003/api/todos'
-
+//agora versão redux
 export default class Todo extends Component{
     constructor(props){
         super(props);
