@@ -3,7 +3,7 @@ import Grid from '../template/grid'
 import IconButton from '../template/iconButton'
 import {bindActionCreators} from 'redux'
 import { connect } from 'react-redux'
-import {changeDescription, search,add} from './todoActions'
+import {changeDescription, search,add, clean} from './todoActions'
 
 class TodoForm extends Component{
     constructor(props){
@@ -23,7 +23,7 @@ class TodoForm extends Component{
         }
     }
     render(){
-        const {add, search,description} = this.props
+        const {add, search,description, clean} = this.props
         return (<div role='form' className='todoForm'>
         <Grid cols='12 9 10'>
             
@@ -37,14 +37,14 @@ class TodoForm extends Component{
             <IconButton style='primary' icon='plus'
             onClick={()=>{add(description)}}/>
             <IconButton style='info' icon='search'
-            onClick={()=>search}/>
+            onClick={()=>search(description)}/>
             <IconButton style='default' icon='close'
-            onClick={this.props.handleClear}/>
+            onClick={()=>clean()}/>
         </Grid>
         </div>)
     }
 }
 
 const mapStateToProps = state => ({description: state.todo.description})
-const mapDispatchToprops = dispatch => bindActionCreators({changeDescription,search,add},dispatch)
+const mapDispatchToprops = dispatch => bindActionCreators({changeDescription,search,add,clean},dispatch)
 export default connect(mapStateToProps,mapDispatchToprops)(TodoForm)

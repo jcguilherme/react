@@ -8,8 +8,10 @@ export const changeDescription = event => ({
 
 
 
-export const search = ()=>{
-    const request = axios.get(`${URL}?sort=-createdAt`)
+export const search = (description)=>{
+    const search = description ? `&description__regex=/${description}/` : ''
+    const request = axios.get(`${URL}?sort=-createdAt${search}`)
+    console.log('entrei aqui')
     return {
         type:'TODO_SEARCH',
         payload: request
@@ -17,7 +19,13 @@ export const search = ()=>{
 }
 
 
-
+export const clean = ()=>{
+    
+    return {
+        type:'TODO_CLEAR',
+        payload:''
+    }
+}
 
 export const add = (description)=>{
   return dispach => {

@@ -1,5 +1,5 @@
 const INITIAL_STATE ={
-    description:'ler livros',
+    description:'',
     list:[
         {
             _id:1,
@@ -24,15 +24,17 @@ const INITIAL_STATE ={
 
 
 export default (state = INITIAL_STATE, action) =>{
-   
+    console.log(action.type)
     switch(action.type){
         case 'DESCRIPTION_CHANGED':
-             console.log('entrei aqui')
             return{...state,description: action.payload} 
         case 'TODO_SEARCH':
             return {...state, list:action.payload.data} 
         case 'TODO_ADDED':
-            return {...state, description:'',list:action.payload.data}          
+            return {...state, description:'',list:action.payload.data}  
+        case 'TODO_CLEAR':
+            console.log('limpoar') 
+            return {...state, description:''}           
         default:
             return state;    
     }
